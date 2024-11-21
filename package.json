@@ -1,0 +1,12 @@
+{
+  "name": "study-bot",
+  "version": "1.0.0",
+  "description": "Een AI chatbot die middelbare scholieren helpt met hun huis en leerwerk.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
