@@ -13,7 +13,7 @@ const port = 3000;
 app.use(bodyParser.json());
 
 // Stel statische bestanden in (bijv. HTML, CSS, JS)
-app.use(express.static(path.join(path.resolve(), 'public')));
+app.use(express.static(path.join(path.resolve(), "public")));
 
 // Root route die het index.html bestand serveert
 app.get("/", (req, res) => {
@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 
 // Chatgeschiedenis bijhouden
 let chatHistory = [];
+let subjectContext = "";
 
 async function getGroqChatCompletion(messages) {
   try {
@@ -41,6 +42,18 @@ app.post("/chat", async (req, res) => {
 
   if (!message || !subject) {
     return res.status(400).json({ response: "Bericht of vak ontbreekt." });
+  }
+
+  // Update de subjectcontext indien nodig
+  if (subject !== subjectContext) {
+    subjectContext = subject;
+    // Voeg een nieuw contextbericht toe
+    chatHistory = [
+      {
+        role: "system",
+        content: `Jij wilt studenten helpen met het vak: ${subject}. Geef duidelijke en eenvoudige uitleg, en wees behulpzaam.`,
+      },
+    ];
   }
 
   // Voeg het bericht van de gebruiker toe aan de chatgeschiedenis
