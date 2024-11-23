@@ -28,7 +28,7 @@ async function getGroqChatCompletion(messages) {
   try {
     const response = await groq.chat.completions.create({
       messages: messages,
-      model: "llama3-8b-8192", // Het Groq-model dat je gebruikt (pas dit aan indien nodig)
+      model: "llama-3.2-90b-vision-preview", // Het Groq-model dat je gebruikt (pas dit aan indien nodig)
     });
     return response.choices[0]?.message?.content || "Geen antwoord ontvangen.";
   } catch (error) {
@@ -51,7 +51,7 @@ app.post("/chat", async (req, res) => {
     chatHistory = [
       {
         role: "system",
-        content: `Jij wilt studenten helpen met het vak: ${subject}. Geef duidelijke en eenvoudige uitleg, en wees behulpzaam.`,
+        content: `Jij wilt studenten helpen met het vak: ${subject}. Geef duidelijke en eenvoudige uitleg, en wees behulpzaam. Als er word gevraagd naar de regels over te laat komen van onze school gebruik het volgende bestand: http://pws-app.infinityfreeapp.com/uploads/afspraken.txt`,
       },
     ];
   }
