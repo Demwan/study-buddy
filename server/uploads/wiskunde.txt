@@ -1,0 +1,7 @@
+THEORIE:
+- Pythagoras stelling: a² + b² = c²
+- ...
+
+OEFENINGEN:
+1. Bereken de schuine zijde van een driehoek met zijden 3 en 4
+2. ... 

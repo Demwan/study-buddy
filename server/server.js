@@ -3,6 +3,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { Groq } from "groq-sdk";
+import fs from "fs/promises";
 dotenv.config();
 
 const app = express();
@@ -37,6 +38,17 @@ async function getGroqChatCompletion(messages) {
   }
 }
 
+async function getSubjectContent(subject) {
+  try {
+    const filePath = path.join(path.resolve(), "server", "uploads", `${subject}.txt`);
+    const content = await fs.readFile(filePath, 'utf8');
+    return content;
+  } catch (error) {
+    console.error(`Fout bij het lezen van ${subject} bestand:`, error);
+    return null;
+  }
+}
+
 app.post("/chat", async (req, res) => {
   const { subject, message } = req.body;
 
@@ -47,11 +59,21 @@ app.post("/chat", async (req, res) => {
   // Update de subjectcontext indien nodig
   if (subject !== subjectContext) {
     subjectContext = subject;
-    // Voeg een nieuw contextbericht toe
+    
+    // Lees de vakinhoud
+    const subjectContent = await getSubjectContent(subject);
+    
+    // Maak het systeem bericht met de vakinhoud
+    const systemMessage = `Jij wilt studenten helpen met het vak: ${subject}. 
+    ${subjectContent ? `\n\nGebruik de volgende vakinhoud als basis voor je antwoorden:\n${subjectContent}` : ''}
+    \nGeef duidelijke en eenvoudige uitleg, en wees behulpzaam. 
+    Als er word gevraagd naar de regels over te laat komen van onze school gebruik het volgende bestand: http://pws-app.infinityfreeapp.com/uploads/afspraken.txt`;
+
+    // Reset chatgeschiedenis met nieuwe context
     chatHistory = [
       {
         role: "system",
-        content: `Jij wilt studenten helpen met het vak: ${subject}. Geef duidelijke en eenvoudige uitleg, en wees behulpzaam. Als er word gevraagd naar de regels over te laat komen van onze school gebruik het volgende bestand: http://pws-app.infinityfreeapp.com/uploads/afspraken.txt`,
+        content: systemMessage,
       },
     ];
   }
