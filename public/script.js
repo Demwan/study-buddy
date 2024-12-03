@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatMessages = document.getElementById("chat-messages");
   let selectedSubject = "";
 
+  console.log("Href:" + window.location.href)
+
   // Selecteer een vak
   document.querySelectorAll(".sidebar ul li").forEach(item => {
     item.addEventListener("click", () => {
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll naar beneden
 
     // Stuur het bericht naar de server
-    fetch("http://localhost:3000/chat", {
+    fetch(window.location.href + "chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
