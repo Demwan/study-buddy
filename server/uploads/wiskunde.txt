@@ -1,7 +1,49 @@
-THEORIE:
-- Pythagoras stelling: a² + b² = c²
-- ...
-
-OEFENINGEN:
-1. Bereken de schuine zijde van een driehoek met zijden 3 en 4
-2. ... 
+=
+1.1 Lineaire functies
+Theorie A: De grafische rekenmachine
+Bij het vak wiskunde werk je regelmatig met de grafische rekenmachine (GR). In de handleiding GR staat hoe je dit apparaat kunt gebruiken. Neem de module Berekeningen op het basisscherm door.
+Opgaven
+Opgave 1
+a Gegeven is de lijn k: y = 2x + 3.
+Welke informatie geeft het getal 2 over de lijn k?
+En het getal 3?
+b In figuur 1.1 is de lijn l getekend. Stel de formule op van l.
+c Stel de formule op van de lijn m die door het punt (0, -1) gaat en evenwijdig is met de lijn l in figuur 1.1.
+Theorie B: Richtingscoëfficiënt
+De algemene vorm van een lineaire functie is f(x) = ax + b met a ongelijk aan 0. De grafiek van f is een rechte lijn.
+De richtingscoëfficiënt is a en het snijpunt met de y-as is (0, b).
+Is a = 0 dan heb je met een constante functie te maken.
+Van de lijn l: y = 3x + 4 is de richtingscoëfficiënt 3.
+Notatie rc1 = 3.
+De lijn m : y = 3x - 2 is evenwijdig met de lijn l, want ze hebben dezelfde richtingscoëfficiënt.
+Van de lijn n: y = 5 is de richtingscoëfficiënt 0.
+Dus de lijn n is een horizontale lijn.
+De formule van een functie wordt ook het functievoorschrift van de functie genoemd.
+De lineaire functie met functievoorschrift f(x) = ax + b heeft als grafiek de rechte lijn y = ax + b. Van deze lijn is a de richtingscoëfficiënt en (0, b) het snijpunt met de y-as.
+Lijnen met dezelfde richtingscoëfficiënt zijn evenwijdig.
+De lijn y = b is de horizontale lijn door het punt (0, b).
+Van een horizontale lijn is de richtingscoëfficiënt 0.
+rc1 = 3 betekent:
+1 naar rechts en 3 omhoog.
+n: y = 5 ofwel
+n: y = Ox + 5.
+Voorbeeld
+Stel de formule op van de lijn k door het punt A(18, 7) die evenwijdig is met de lijn m: y = ½x + 13.
+Uitwerking
+Stel k: y = ax + b.
+k ∥ m, dus a = rcm = ½
+y = ½x + b
+door A(18, 7)
+18 + b = 7
+9 + b = 7
+b = -2
+Dus k: y = ½x - 2.
+Opgaven
+Opgave 2 is een testopgave. Als je de theorie en het voorbeeld begrijpt, maak dan de T-opgave. Gaat dit foutloos, dan kun je verder gaan met de opgave die achter → staat. Lukt opgave 2 niet, ga dan verder met opgave 3. Je kunt de testopgave ook overslaan en meteen met opgave 3 verdergaan.
+Opgave 2
+a De lijn k gaat door het punt A(4, 3) en is evenwijdig met de lijn l: y = -½x + 1.
+Stel de formule op van k.
+b De lijn m: y = ax + 3 gaat door het punt B(-4, 2).
+Bereken a.
+c De lijn n: y = 2½x + b snijdt de x-as in hetzelfde punt als de lijn p: y = -1½x + 6.
+Bereken b.

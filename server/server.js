@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { Groq } from "groq-sdk";
 import fs from "fs/promises";
+import promt from "./promt.js";
 dotenv.config();
 
 const app = express();
@@ -66,8 +67,7 @@ app.post("/chat", async (req, res) => {
     // Maak het systeem bericht met de vakinhoud
     const systemMessage = `Jij wilt studenten helpen met het vak: ${subject}. 
     ${subjectContent ? `\n\nGebruik de volgende vakinhoud als basis voor je antwoorden:\n${subjectContent}` : ''}
-    \nGeef duidelijke en eenvoudige uitleg, en wees behulpzaam. 
-    Als er word gevraagd naar de regels over te laat komen van onze school gebruik het volgende bestand: http://pws-app.infinityfreeapp.com/uploads/afspraken.txt`;
+    \n${promt}`;
 
     // Reset chatgeschiedenis met nieuwe context
     chatHistory = [
@@ -92,5 +92,5 @@ app.post("/chat", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server draait op http://localhost:${port}`);
+  console.log(`Server draait op port: ${port}`);
 });
