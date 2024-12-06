@@ -1,98 +1,241 @@
+:root {
+  --Biologie-color: rgb(46, 204, 113);
+  --Biologie-background: rgba(46, 204, 113, 0.1);
+  --Wiskunde-color: rgb(231, 76, 60);
+  --Wiskunde-background: rgba(231, 76, 60, 0.1);
+  --Natuurkunde-color: rgb(52, 152, 219);
+  --Natuurkunde-background: rgba(52, 152, 219, 0.1);
+  --Geschiedenis-color: rgb(241, 196, 15);
+  --Geschiedenis-background: rgba(241, 196, 15, 0.1);
+  --Scheikunde-color: rgb(26, 188, 156);
+  --Scheikunde-background: rgba(26, 188, 156, 0.1);
+  --Bedrijfseconomie-color: rgb(155, 89, 182);
+  --Bedrijfseconomie-background: rgba(155, 89, 182, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Inter, sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100vh;
-  }
-  
-  .container {
-    display: flex;
-    width: 100%;
-  }
-  
-  .sidebar {
-    width: 20%;
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-right: 1px solid #ddd;
-  }
-  
-  .sidebar h2 {
-    margin-top: 0;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .sidebar ul li:hover {
-    background-color: #ddd;
-  }
-  
-  .chat-window {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chat-header {
-    background-color: #0078d7;
-    color: white;
-    padding: 10px;
-  }
-  
-  .chat-messages {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-  }
-  
-  .chat-messages .message {
-    margin: 5px 0;
-  }
-  
-  .chat-messages .user-message {
-    text-align: right;
-    color: #0078d7;
-  }
-  
-  .chat-messages .bot-message {
-    text-align: left;
-    color: #333;
-  }
-  
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .chat-input button {
-    padding: 10px;
-    background-color: #0078d7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-  
-  .chat-input button:hover {
-    background-color: #005bb5;
-  }
-  
+  background-color: #ecf0f1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+nav {
+  height: 100vh;
+  width: 25vh;
+  min-width: 25vh;
+  background-color: #FFFFFF;
+}
+
+.Flexbox-Nav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Navbar {
+  margin-left: 15%;
+}
+
+#logo {
+  width: 100%;
+  height: auto;
+  padding-top: 5%;
+}
+
+#Footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+}
+
+#User-Info {
+  font-size: 0.76rem;
+}
+
+.dot {
+  height: 50px;
+  width: 50px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+h2 {
+  font-size: 1.3rem;
+  color: #95A5A6;
+}
+
+#Vakken {
+  margin-left: 10%;
+  margin-bottom: 7.5%;
+}
+
+#Header-List {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.Menu-Optie button {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  font-family: Inter, sans-serif;
+  width: 90%;
+  font-size: 1rem;
+  padding: 5%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+body {
+  display: flex;
+  background-color: #ecf0f1;
+}
+
+.Content {
+  flex-grow: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#Helpen-Met {
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding: 5px 5px 5px 10px;
+  width: 50%;
+}
+
+.search-button {
+  color: rgb(0, 0, 0);
+  border: none;
+  background-color: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.search-button-background {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 5px 10px;
+  background-color: transparent;
+}
+
+.chat-screen {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.chat-screen.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-window {
+  width: 75%;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.chat-header {
+  padding: 15px;
+  text-align: center;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Afstand tussen berichten */
+}
+
+.user-message,
+.bot-message,
+.system-message{
+  max-width: 60%;
+  /* Breedte van de tekstwolkjes */
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #ffffff;
+  color: #000;
+  text-align: left;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: var(--Biologie-background);
+  color: #000;
+  text-align: left;
+}
+
+.system-message {
+  align-items: center;
+  background-color: var(--Biologie-background);
+  color: #000;
+  text-align: center;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding: 5px 5px 5px 10px;
+  width: 50%;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
