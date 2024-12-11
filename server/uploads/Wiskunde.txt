@@ -1,3 +1,5 @@
+zelf kopieren uit online methode
+
 1.1 Lineaire functies
 Theorie A: De grafische rekenmachine
 Bij het vak wiskunde werk je regelmatig met de grafische rekenmachine (GR). In de handleiding GR staat hoe je dit apparaat kunt gebruiken. Neem de module Berekeningen op het basisscherm door.

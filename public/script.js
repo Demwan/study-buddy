@@ -40,11 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       selectedSubjectHeader.innerHTML = selectedSubject;
       selectedSubjectHeader.style.color = `var(--${selectedSubject}-color)`;
-      
 
-      
-      
+
+      // Transition to chat screen if a different subject is selected
+      if (currenSubject != "" && selectedSubject !== currenSubject) {
+        transitionToStarterScreen();
+      }
+
       currenSubject = selectedSubject;
+
+
     });
   });
 
@@ -60,12 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Transitie naar chat scherm
   function transitionToChatScreen(subject) {
-    
     selectedSubjectHeader.textContent = subject;
     starterScreen.style.display = "none";
     chatScreen.classList.add("active");
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
+
+  // Transitie naar start scherm
+  function transitionToStarterScreen() {
+    starterScreen.style.display = "flex";
+    chatScreen.classList.remove("active");
+    chatMessages.innerHTML = ""; // Clear chat messages
+    selectedSubjectHeader.innerHTML = ""; // Clear selected subject
+  }
+
+
+
+
+
 
   // Functie om tekstdecoratie toe te voegen (vet, schuin, lijsten, nieuwe regels)
   function formatText(text) {
@@ -134,14 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listener voor versturen van bericht vanaf starter scherm
   sendButton.addEventListener("click", () => {
     const message = userInput.value;
-    if (!selectedSubject) {
-      // Als er nog geen vak is geselecteerd, gebruik de eerste beschikbare knop
-      const firstSubjectButton = document.querySelector(".Vakken-Button");
-      if (firstSubjectButton) {
-        selectedSubject = firstSubjectButton.getAttribute("data-subject");
-        transitionToChatScreen(selectedSubject);
-      }
-    }
     sendMessageToServer(selectedSubject, message);
     userInput.value = "";
   });
@@ -151,5 +160,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = chatInput.value;
     sendMessageToServer(selectedSubject, message);
     chatInput.value = "";
+  });
+
+  // Add event listeners for enter key press
+  userInput.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      if (selectedSubject != "") {
+        const message = userInput.value;
+        sendMessageToServer(selectedSubject, message);
+        userInput.value = "";
+        transitionToChatScreen(selectedSubject);
+      }
+    }
+  });
+
+  chatInput.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      const message = chatInput.value;
+      sendMessageToServer(selectedSubject, message);
+      chatInput.value = "";
+    }
   });
 });
