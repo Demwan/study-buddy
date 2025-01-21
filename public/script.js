@@ -79,10 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSubjectHeader.innerHTML = ""; // Clear selected subject
   }
 
+  const hamburgerMenu = document.querySelector(".hamburger-menu");
+  const nav = document.querySelector("nav");
 
+  hamburgerMenu.addEventListener("click", () => {
+    nav.classList.toggle("nav-visible");
+    hamburgerMenu.classList.toggle("active");
+  });
 
-
-
+  // Ensure the sidebar is displayed when resizing to a desktop view
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 769) {
+      nav.classList.add("nav-visible");
+    } else {
+      nav.classList.remove("nav-visible");
+    }
+  });
 
   // Functie om tekstdecoratie toe te voegen (vet, schuin, lijsten, nieuwe regels)
   function formatText(text) {
