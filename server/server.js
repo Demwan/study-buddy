@@ -30,7 +30,7 @@ async function getGroqChatCompletion(messages) {
   try {
     const response = await groq.chat.completions.create({
       messages: messages,
-      model: "llama-3.2-90b-vision-preview", // Het Groq-model dat je gebruikt (pas dit aan indien nodig)
+      model: "llama-3.3-70b-versatile", // Het Groq-model dat je gebruikt (pas dit aan indien nodig)
     });
     return response.choices[0]?.message?.content || "Geen antwoord ontvangen.";
   } catch (error) {
