@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById(
           currenSubject + "-Button",
         ).style.backgroundColor = "";
-        chatMessages.innerHTML += `<div class="system-message" style="background-color: var(--${selectedSubject}-background)">Je hebt ${selectedSubject} geselecteerd.</div>`;
       }
       document.getElementById(selectedSubject + "-Button").style.color =
         `var(--${selectedSubject}-color)`;
@@ -52,14 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ).style.backgroundColor = `var(--${selectedSubject}-background)`;
       document.querySelectorAll(".search-button").forEach((button) => {
         button.style.color = `var(--${selectedSubject}-color)`;
-      });
       document
         .querySelectorAll(".search-button-background")
         .forEach((button) => {
           button.style.backgroundColor = `var(--${selectedSubject}-background)`;
         });
       selectedSubjectHeader.innerHTML = selectedSubject;
-      selectedSubjectHeader.style.color = `var(--${selectedSubject}-color)`;
+        selectedSubjectHeader.style.color = `var(--${selectedSubject}-color)`;
+      });
 
 
       // Transition to chat screen if a different subject is selected
@@ -175,6 +174,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Stuur bericht naar de server (oude methode)
   function sendMessageToServer(subject, message) {
+    if (!subject) {
+      if (window.innerWidth < 769) {
+        handleMobileSubjectSelection(message);
+      } else {
+        showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
+      }
+      return;
+    }
     if (!message || message.trim() === "") {
       if (chatScreen.classList.contains("active")) {
         showError(chatError, "Je moet een bericht typen om te verzenden.");
@@ -212,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Verwerk de botreactie en pas tekstdecoratie toe
         const formattedResponse = formatText(data.response);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">${formattedResponse}</div>`;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // chatMessages.scrollTop = chatMessages.scrollHeight;
       })
       .catch((error) => {
         console.error("Fout:", error);
@@ -257,8 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const message = userInput.value.trim();
       if (!selectedSubject) {
         if (window.innerWidth < 769) {
-          storedMessage = message; // Store the message
-          document.querySelector(".hamburger-menu").click();
+          handleMobileSubjectSelection(message);
         } else {
           showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
         }
@@ -315,29 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     transitionToChatScreen(selectedSubject);
   });
 
-  // Remove duplicate event listeners and keep only these versions
-  userInput.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      const message = userInput.value.trim();
-      if (!selectedSubject) {
-        if (window.innerWidth < 769) {
-          handleMobileSubjectSelection(message);
-        } else {
-          showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
-        }
-        return;
-      }
 
-      if (!message) {
-        showError(starterError, "Je moet een bericht typen om te verzenden.");
-        return;
-      }
-
-      sendMessageToServer(selectedSubject, message);
-      userInput.value = "";
-      transitionToChatScreen(selectedSubject);
-    }
-  });
 
   // Modify sendMessageToServer function
   function sendMessageToServer(subject, message) {
@@ -394,4 +378,74 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  // Add auto-resize functionality for text inputs
+  function autoResize(element) {
+    element.style.height = 'auto';
+    const scrollHeight = element.scrollHeight;
+    const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
+    element.style.height = Math.min(scrollHeight, maxHeight) + 'px';
+
+    // Only manage overflow
+    element.style.overflowY = scrollHeight >= maxHeight ? 'auto' : 'hidden';
+    // Remove dynamic padding
+
+    if (!element.dataset.isMaxHeight && scrollHeight >= maxHeight) {
+      console.log("Reached max height");
+      // document.querySelector(".search-input").style.margin = "0";
+      // document.querySelector(".search-bar").style.margin = "10px 0 10px 15px";
+      element.dataset.isMaxHeight = "true";
+    } else if (element.dataset.isMaxHeight === "true" && scrollHeight < maxHeight) {
+      console.log("No longer at max height");
+      // document.querySelector(".search-input").style.margin = "10px 15px 10px 15px";
+      // document.querySelector(".search-bar").style.margin = "0";
+      element.dataset.isMaxHeight = "";
+    }
+  }
+
+  // Apply auto-resize to both inputs
+  [userInput, chatInput].forEach(input => {
+    input.style.overflowY = 'hidden';
+    
+    input.addEventListener('input', (e) => {
+      autoResize(e.target);
+    });
+  });
+
+  // Add keydown event listeners to prevent line breaks on Enter without Shift
+  [userInput, chatInput].forEach(input => {
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.shiftKey) { 
+        console.log("Shift + Enter pressed");
+        return;
+      }
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        // Call your send function depending on which input is used
+        if (input === userInput) {
+          const message = userInput.value.trim();
+          if (!selectedSubject) {
+            if (window.innerWidth < 769) {
+              handleMobileSubjectSelection(message);
+            } else {
+              showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
+            }
+            return;
+          }
+
+          if (!message) {
+            showError(starterError, "Je moet een bericht typen om te verzenden.");
+            return;
+          }
+
+          sendMessageToServer(selectedSubject, message);
+          userInput.value = "";
+          transitionToChatScreen(selectedSubject);
+        } else {
+          const message = chatInput.value.trim();
+          sendMessageToServer(selectedSubject, message);
+          chatInput.value = "";
+        }
+      }
+    });
+  });
 });

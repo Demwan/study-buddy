@@ -1,5 +1,4 @@
-zelf kopieren uit online methode
-
+Getal en Ruimte Wiskunde B VWO Deel 1
 1.1 Lineaire functies
 Theorie A: De grafische rekenmachine
 Bij het vak wiskunde werk je regelmatig met de grafische rekenmachine (GR). In de handleiding GR staat hoe je dit apparaat kunt gebruiken. Neem de module Berekeningen op het basisscherm door.
@@ -47,3 +46,4 @@ Stel de formule op van k.
 b De lijn m: y = ax + 3 gaat door het punt B(-4, 2).
 Bereken a.
 c De lijn n: y = 2½x + b snijdt de x-as in hetzelfde punt als de lijn p: y = -1½x + 6.
+

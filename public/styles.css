@@ -30,12 +30,16 @@ body {
   height: 100%;
   min-height: 100vh;
   overflow: hidden; /* Prevent scrolling */
+  position: fixed; /* Add this */
+  top: 0; /* Add this */
+  left: 0; /* Add this */
+  right: 0; /* Add this */
+  bottom: 0; /* Add this */
 }
 
 nav {
-  height: 100vh;
-  width: 25vh;
-  min-width: 25vh;
+  height: 100%;
+  width: 250px;
   background-color: #FFFFFF;
   transition: transform 0.3s ease-in-out;
   display: flex; /* Change this from display: none */
@@ -114,6 +118,10 @@ h2 {
   transition: background-color 0.3s ease;
 }
 
+.Menu-Optie svg {
+  margin-right: 10px;
+}
+
 body {
   display: flex;
   background-color: #ecf0f1;
@@ -121,13 +129,14 @@ body {
 
 .Content {
   flex-grow: 1;
-  height: 100vh;
+  height: 100%; /* Change from 100vh */
   min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative; /* Add this */
+  overflow-y: auto; /* Add this */
 }
 
 #Helpen-Met {
@@ -137,11 +146,16 @@ body {
 
 .search-bar {
   display: flex;
-  align-items: center;
+  padding: 10px 15px;
+  align-items: flex-start; /* Change from center to flex-start */
   background-color: white;
   border-radius: 25px;
-  padding: 5px 5px 5px 10px;
+  padding: 0;
   width: 50%;
+  min-height: 42px; /* Add this */
+  gap: 5px; /* Add space between textarea and button */
+  box-sizing: border-box; /* Add this */
+  transition: padding 0.1s ease-out;
 }
 
 .search-button {
@@ -164,6 +178,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 4px 5px; /* Adjust margins for better alignment */
+  align-self: center; /* Add this to center the button vertically */
 }
 
 .search-input {
@@ -171,8 +187,36 @@ body {
   border: none;
   outline: none;
   font-size: 1rem;
-  padding: 5px 10px;
+  margin: 10px 15px;
   background-color: transparent;
+  resize: none;
+  min-height: 24px;
+  max-height: 150px;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  font-family: Inter, sans-serif;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
+  transition: height 0.1s ease-out;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background-clip: padding-box; /* Ensure text doesn't overlap the padding */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.search-input::-webkit-scrollbar,
+.chat-messages::-webkit-scrollbar,
+.chat-window::-webkit-scrollbar {
+  display: none;
+}
+
+/* Remove or modify this section as it conflicts with scrolling */
+textarea.search-input {
+  overflow-y: auto; /* Change from hidden to auto */
+  /* padding-top: 10px; */
 }
 
 .chat-screen {
@@ -190,11 +234,13 @@ body {
 
 .chat-window {
   width: 75%;
-  height: 100vh;
+  height: 100%; /* Change from 100vh */
   min-height: 0; /* Add this */
   overflow-y: auto;
   display: flex; /* Add this */
   flex-direction: column; /* Add this */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .chat-header {
@@ -209,17 +255,20 @@ body {
   flex-direction: column;
   gap: 10px;
   overflow-y: auto; /* Add this */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .user-message,
 .bot-message,
-.system-message{
-  max-width: 60%;
-  /* Breedte van de tekstwolkjes */
+.system-message {
   padding: 10px 15px;
   border-radius: 15px;
   font-size: 1rem;
   line-height: 1.5;
+  word-wrap: break-word; /* Add this to wrap long words */
+  overflow-wrap: break-word; /* Add this for better word wrapping */
+  white-space: pre-wrap; /* Preserve whitespace and wrapping */
 }
 
 .user-message {
@@ -227,6 +276,7 @@ body {
   background-color: #ffffff;
   color: #000;
   text-align: left;
+  max-width: calc(60% - 30px); /* Subtract padding to maintain proper width */
 }
 
 .bot-message {
@@ -234,6 +284,7 @@ body {
   background-color: var(--Biologie-background);
   color: #000;
   text-align: left;
+  max-width: 80%
 }
 
 .system-message {
@@ -241,17 +292,22 @@ body {
   background-color: var(--Biologie-background);
   color: #000;
   text-align: center;
+  max-width: calc(60% - 30px); /* Subtract padding to maintain proper width */
 }
 
 .chat-input {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Change from center to flex-start */
   background-color: white;
   border-radius: 25px;
-  padding: 5px 5px 5px 10px;
+  padding: 0;
   width: 50%;
   margin-bottom: 15px;
   margin-top: 15px;
+  min-height: 42px; /* Add this */
+  gap: 5px; /* Add space between textarea and button */
+  box-sizing: border-box; /* Add this */
+  transition: padding 0.1s ease-out;
 }
 
 .hamburger-menu {
@@ -354,27 +410,28 @@ body {
     width: 100%;
   }
 
-  .chat-input {
+  .chat-input, .search-bar {
     width: 90%;
     max-width: none;
     margin: 15px 20px;
-    height: 42px;
-  }
-
-  .search-bar {
-    width: 90%;
-    max-width: none;
-    margin: 0 20px;
-    height: 42px;
+    min-height: 42px; /* Change height to min-height */
   }
 
   .search-input {
     font-size: 16px; /* Prevents iOS zoom on focus */
-    padding: 12px 15px;
   }
 
   .bot-message, .user-message, .system-message {
     max-width: 100%;
+    margin: 5px 20px; /* Add horizontal margin on mobile */
+  }
+
+  .chat-messages {
+    padding: 0;
+  }
+
+  .chat-screen.active {
+    height: 105%;
   }
 }
 

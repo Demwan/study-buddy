@@ -66,8 +66,8 @@ app.post("/chat", async (req, res) => {
     
     // Maak het systeem bericht met de vakinhoud
     const systemMessage = `Jij wilt studenten helpen met het vak: ${subject}. 
-    ${subjectContent ? `\n\nGebruik de volgende vakinhoud als basis voor je antwoorden:\n${subjectContent}` : ''}
-    \n${promt}`;
+    Gebruik de volgende vakinhoud als basis voor je antwoorden:\n${subjectContent}
+    ${promt}`;
 
     // Reset chatgeschiedenis met nieuwe context
     chatHistory = [
