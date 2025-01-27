@@ -203,6 +203,12 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.innerHTML += `<div class="user-message">${message}</div>`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
+    // Show loading indicator
+    chatMessages.innerHTML += 
+      `<div class="bot-message loading-message" style="background-color: var(--${selectedSubject}-background)">
+         <div class="spinner"></div>
+       </div>`;
+
     // Stuur het bericht naar de server
     fetch(window.location.href + "chat", {
       method: "POST",
@@ -216,12 +222,17 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        // Remove loading indicator
+        const loadingEl = chatMessages.querySelector(".loading-message");
+        if (loadingEl) loadingEl.remove();
         // Verwerk de botreactie en pas tekstdecoratie toe
         const formattedResponse = formatText(data.response);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">${formattedResponse}</div>`;
-        // chatMessages.scrollTop = chatMessages.scrollHeight;
+        // chatMessages.scrollTop = chatMessages.scrollHeight; // Disable auto-scroll here
       })
       .catch((error) => {
+        const loadingEl = chatMessages.querySelector(".loading-message");
+        if (loadingEl) loadingEl.remove();
         console.error("Fout:", error);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">Er ging iets mis. Probeer het later opnieuw.</div>`;
       });
@@ -321,7 +332,31 @@ document.addEventListener("DOMContentLoaded", () => {
     transitionToChatScreen(selectedSubject);
   });
 
+  // Update the sendButton click handler
+  sendButton.addEventListener("click", () => {
+    const message = userInput.value.trim();
+    if (!selectedSubject) {
+      if (window.innerWidth < 769) {
+        storedMessage = message;
+        userInput.blur(); // Add this to remove focus
+        nav.classList.add("nav-visible");
+        hamburgerMenu.classList.add("active");
+        overlay.classList.add("active");
+      } else {
+        showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
+      }
+      return;
+    }
+    
+    if (!message) {
+      showError(starterError, "Je moet een bericht typen om te verzenden.");
+      return;
+    }
 
+    sendMessageToServer(selectedSubject, message);
+    userInput.value = "";
+    transitionToChatScreen(selectedSubject);
+  });
 
   // Modify sendMessageToServer function
   function sendMessageToServer(subject, message) {
@@ -354,6 +389,12 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.innerHTML += `<div class="user-message">${message}</div>`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
+    // Show loading indicator
+    chatMessages.innerHTML += 
+      `<div class="bot-message loading-message" style="background-color: var(--${selectedSubject}-background)">
+         <div class="spinner"></div>
+       </div>`;
+
     // Stuur het bericht naar de server
     fetch(window.location.href + "chat", {
       method: "POST",
@@ -367,12 +408,17 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        // Remove loading indicator
+        const loadingEl = chatMessages.querySelector(".loading-message");
+        if (loadingEl) loadingEl.remove();
         // Verwerk de botreactie en pas tekstdecoratie toe
         const formattedResponse = formatText(data.response);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">${formattedResponse}</div>`;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // chatMessages.scrollTop = chatMessages.scrollHeight; // Disable auto-scroll here
       })
       .catch((error) => {
+        const loadingEl = chatMessages.querySelector(".loading-message");
+        if (loadingEl) loadingEl.remove();
         console.error("Fout:", error);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">Er ging iets mis. Probeer het later opnieuw.</div>`;
       });
