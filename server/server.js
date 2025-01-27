@@ -7,69 +7,69 @@ import fs from "fs/promises";
 import promt from "./promt.js";
 dotenv.config();
 
+// Initialize express and configurations
 const app = express();
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const port = 3000;
 
-// Body parser om JSON-data te verwerken
+// Middleware setup
 app.use(bodyParser.json());
-
-// Stel statische bestanden in (bijv. HTML, CSS, JS)
 app.use(express.static(path.join(path.resolve(), "public")));
 
-// Root route die het index.html bestand serveert
+// Serve index.html at root route
 app.get("/", (req, res) => {
   res.sendFile(path.join(path.resolve(), "public", "index.html"));
 });
 
-// Chatgeschiedenis bijhouden
+// Chat state management
 let chatHistory = [];
 let subjectContext = "";
 
+// AI response handler
 async function getGroqChatCompletion(messages) {
   try {
     const response = await groq.chat.completions.create({
       messages: messages,
-      model: "llama-3.3-70b-versatile", // Het Groq-model dat je gebruikt (pas dit aan indien nodig)
+      model: "llama-3.3-70b-versatile",
     });
-    return response.choices[0]?.message?.content || "Geen antwoord ontvangen.";
+    return response.choices[0]?.message?.content || "No response received.";
   } catch (error) {
-    console.error("Fout bij het ophalen van antwoord:", error);
-    return "Er ging iets mis bij het ophalen van het antwoord." + error;
+    console.error("Error fetching response:", error);
+    return "Error retrieving response: " + error;
   }
 }
 
+// Load subject content from files
 async function getSubjectContent(subject) {
   try {
     const filePath = path.join(path.resolve(), "server", "uploads", `${subject}.txt`);
     const content = await fs.readFile(filePath, 'utf8');
     return content;
   } catch (error) {
-    console.error(`Fout bij het lezen van ${subject} bestand:`, error);
+    console.error(`Error reading ${subject} file:`, error);
     return null;
   }
 }
 
+// Chat endpoint handler
 app.post("/chat", async (req, res) => {
   const { subject, message } = req.body;
 
   if (!message || !subject) {
-    return res.status(400).json({ response: "Bericht of vak ontbreekt." });
+    return res.status(400).json({ response: "Message or subject missing." });
   }
 
-  // Update de subjectcontext indien nodig
+  // Reset context if subject changes
   if (subject !== subjectContext) {
     subjectContext = subject;
-    
-    // Lees de vakinhoud
     const subjectContent = await getSubjectContent(subject);
     
-    // Maak het systeem bericht met de vakinhoud
-    const systemMessage = `Jij wilt studenten helpen met het vak: ${subject}. 
-    Gebruik de volgende vakinhoud als basis voor je antwoorden:\n${subjectContent}
+    // Create system message with subject content
+    const systemMessage = `You want to help students with the subject: ${subject}. 
+    Use the following subject content as a basis for your answers:\n${subjectContent}
     ${promt}`;
 
-    // Reset chatgeschiedenis met nieuwe context
+    // Reset chat history with new context
     chatHistory = [
       {
         role: "system",
@@ -78,19 +78,17 @@ app.post("/chat", async (req, res) => {
     ];
   }
 
-  // Voeg het bericht van de gebruiker toe aan de chatgeschiedenis
+  // Update chat history with user message
   chatHistory.push({ role: "user", content: message });
 
-  // Stuur de chatgeschiedenis door naar de AI
+  // Get AI response and update chat history
   const aiResponse = await getGroqChatCompletion(chatHistory);
-
-  // Voeg de reactie van de bot toe aan de chatgeschiedenis
   chatHistory.push({ role: "assistant", content: aiResponse });
 
-  // Stuur de reactie terug naar de frontend
   return res.json({ response: aiResponse });
 });
 
+// Start server
 app.listen(port, () => {
-  console.log(`Server draait op port: ${port}`);
+  console.log(`Server running on port: ${port}`);
 });

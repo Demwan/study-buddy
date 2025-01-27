@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Get DOM elements
   const sendButton = document.getElementById("send-button");
   const chatSendButton = document.getElementById("chat-send-button");
   const userInput = document.getElementById("user-input");
@@ -12,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedSubject = "";
   let currenSubject = "";
-  let storedMessage = ""; // Add this variable to store the message
+  let storedMessage = ""; // Store message while selecting subject on mobile
 
-  // Selecteer een vak
+  // Subject selection handlers
   document.querySelectorAll(".Vakken-Button").forEach((button) => {
     button.addEventListener("click", () => {
       selectedSubject = button.getAttribute("data-subject");
@@ -72,27 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.getElementById("send-button").addEventListener("click", () => {
-    const message = userInput.value.trim();
-    if (!selectedSubject) {
-      if (window.innerWidth < 769) {
-        storedMessage = message; // Store the message
-        document.querySelector(".hamburger-menu").click();
-      } else {
-        showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
-      }
-      return;
-    }
-    
-    if (!message) {
-      showError(starterError, "Je moet een bericht typen om te verzenden.");
-      return;
-    }
-
-    transitionToChatScreen(selectedSubject);
-  });
-
-  // Transitie naar chat scherm
+  // Screen transition functions
   function transitionToChatScreen(subject) {
     selectedSubjectHeader.textContent = subject;
     starterScreen.style.display = "none";
@@ -100,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Transitie naar start scherm
   function transitionToStarterScreen() {
     starterScreen.style.display = "flex";
     chatScreen.classList.remove("active");
@@ -108,12 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSubjectHeader.innerHTML = ""; // Clear selected subject
   }
 
+  // Mobile menu handlers
   const hamburgerMenu = document.querySelector(".hamburger-menu");
   const nav = document.querySelector("nav");
   const overlay = document.querySelector(".overlay");
 
   hamburgerMenu.addEventListener("click", () => {
-    console.log("clicked");
     nav.classList.toggle("nav-visible");
     hamburgerMenu.classList.toggle("active");
     overlay.classList.toggle("active");
@@ -135,24 +115,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Functie om tekstdecoratie toe te voegen (vet, schuin, lijsten, nieuwe regels)
+  // Text formatting function for chat messages
   function formatText(text) {
-    // Voeg een nieuwe regel toe voor elk \n in de tekst
+    // Add a new line for each \n in the text
     text = text.replace(/\n/g, "<br />");
 
-    // Vervang **tekst** door <strong>tekst</strong>
+    // Replace **text** with <strong>text</strong>
     text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-    // Vervang *tekst* door <em>tekst</em>
+    // Replace *text* with <em>text</em>
     text = text.replace(/\*(.*?)\*/g, "<em>$1</em>");
 
-    // Verwerk ongeordende lijsten (begint met een '-' gevolgd door een spatie)
+    // Process unordered lists (starts with a '-' followed by a space)
     text = text.replace(/^- (.*?)(?=\n|$)/gm, "<ul><li>$1</li></ul>");
 
-    // Verwerk geordende lijsten (begint met een nummer gevolgd door een punt)
+    // Process ordered lists (starts with a number followed by a dot)
     text = text.replace(/^\d+\. (.*?)(?=\n|$)/gm, "<ol><li>$1</li></ol>");
 
-    // Zorg ervoor dat meerdere li's in een lijst correct worden ingesloten in de lijsttags
+    // Ensure multiple li's in a list are correctly enclosed in list tags
     text = text.replace(/(<ul><li>.*?<\/li><\/ul>)/g, function (match) {
       return `<ul>${match.replace(/<\/li><\/ul>/g, "</li>").replace(/<ul>/g, "")}</ul>`;
     });
@@ -164,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return text;
   }
 
+  // Error handling display
   function showError(element, message) {
     element.textContent = message;
     element.classList.add("visible");
@@ -172,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
-  // Stuur bericht naar de server (oude methode)
+  // Main message sending function
   function sendMessageToServer(subject, message) {
     if (!subject) {
       if (window.innerWidth < 769) {
@@ -199,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Voeg het bericht van de gebruiker toe aan de chat
+    // Add the user's message to the chat
     chatMessages.innerHTML += `<div class="user-message">${message}</div>`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -209,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
          <div class="spinner"></div>
        </div>`;
 
-    // Stuur het bericht naar de server
+    // Send the message to the server
     fetch(window.location.href + "chat", {
       method: "POST",
       headers: {
@@ -225,10 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Remove loading indicator
         const loadingEl = chatMessages.querySelector(".loading-message");
         if (loadingEl) loadingEl.remove();
-        // Verwerk de botreactie en pas tekstdecoratie toe
+        // Process the bot response and apply text formatting
         const formattedResponse = formatText(data.response);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">${formattedResponse}</div>`;
-        // chatMessages.scrollTop = chatMessages.scrollHeight; // Disable auto-scroll here
       })
       .catch((error) => {
         const loadingEl = chatMessages.querySelector(".loading-message");
@@ -238,13 +218,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Event listener voor versturen van bericht vanaf starter scherm
+  // Event listener for sending message from starter screen
   sendButton.addEventListener("click", () => {
     const message = userInput.value.trim();
     if (!selectedSubject) {
       if (window.innerWidth < 769) {
         storedMessage = message; // Store the message
-        console.log(storedMessage);
         document.querySelector(".hamburger-menu").click();
       } else {
         showError(starterError, "Kies eerst een vak om een bericht te verzenden.");
@@ -262,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
     transitionToChatScreen(selectedSubject);
   });
 
-  // Event listener voor versturen van bericht vanuit chat scherm
+  // Event listener for sending message from chat screen
   chatSendButton.addEventListener("click", () => {
     const message = chatInput.value;
     sendMessageToServer(selectedSubject, message);
@@ -301,6 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Message input handlers
   function handleMobileSubjectSelection(message) {
     if (window.innerWidth < 769 && !nav.classList.contains('nav-visible')) {
       storedMessage = message;
@@ -385,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Voeg het bericht van de gebruiker toe aan de chat
+    // Add the user's message to the chat
     chatMessages.innerHTML += `<div class="user-message">${message}</div>`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -395,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
          <div class="spinner"></div>
        </div>`;
 
-    // Stuur het bericht naar de server
+    // Send the message to the server
     fetch(window.location.href + "chat", {
       method: "POST",
       headers: {
@@ -411,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Remove loading indicator
         const loadingEl = chatMessages.querySelector(".loading-message");
         if (loadingEl) loadingEl.remove();
-        // Verwerk de botreactie en pas tekstdecoratie toe
+        // Process the bot response and apply text formatting
         const formattedResponse = formatText(data.response);
         chatMessages.innerHTML += `<div class="bot-message" style="background-color: var(--${selectedSubject}-background)">${formattedResponse}</div>`;
         // chatMessages.scrollTop = chatMessages.scrollHeight; // Disable auto-scroll here
@@ -424,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Add auto-resize functionality for text inputs
+  // Text area auto-resize functionality
   function autoResize(element) {
     element.style.height = 'auto';
     const scrollHeight = element.scrollHeight;
@@ -436,19 +416,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remove dynamic padding
 
     if (!element.dataset.isMaxHeight && scrollHeight >= maxHeight) {
-      console.log("Reached max height");
-      // document.querySelector(".search-input").style.margin = "0";
-      // document.querySelector(".search-bar").style.margin = "10px 0 10px 15px";
       element.dataset.isMaxHeight = "true";
     } else if (element.dataset.isMaxHeight === "true" && scrollHeight < maxHeight) {
-      console.log("No longer at max height");
-      // document.querySelector(".search-input").style.margin = "10px 15px 10px 15px";
-      // document.querySelector(".search-bar").style.margin = "0";
       element.dataset.isMaxHeight = "";
     }
   }
 
-  // Apply auto-resize to both inputs
+  // Initialize auto-resize for text inputs
   [userInput, chatInput].forEach(input => {
     input.style.overflowY = 'hidden';
     
@@ -457,13 +431,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Add keydown event listeners to prevent line breaks on Enter without Shift
+  // Handle Enter and Shift+Enter in text inputs
   [userInput, chatInput].forEach(input => {
     input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && event.shiftKey) { 
-        console.log("Shift + Enter pressed");
-        return;
-      }
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         // Call your send function depending on which input is used

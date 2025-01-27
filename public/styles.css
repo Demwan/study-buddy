@@ -1,3 +1,4 @@
+/* Theme colors for different subjects */
 :root {
   --Biologie-color: rgb(46, 204, 113);
   --Biologie-background: rgba(46, 204, 113, 0.1);
@@ -13,12 +14,14 @@
   --Economie-background: rgba(155, 89, 182, 0.1);
 }
 
+/* Base styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Document setup */
 html {
   font-family: Inter, sans-serif;
 }
@@ -37,6 +40,7 @@ body {
   bottom: 0; /* Add this */
 }
 
+/* Navigation styles */
 nav {
   height: 100%;
   width: 250px;
@@ -50,6 +54,7 @@ nav {
   display: flex !important;
 }
 
+/* Navigation components */
 .Flexbox-Nav {
   height: 100%;
   display: flex;
@@ -127,6 +132,7 @@ body {
   background-color: #ecf0f1;
 }
 
+/* Main content area */
 .Content {
   flex-grow: 1;
   height: 100%;
@@ -144,6 +150,7 @@ body {
   text-align: center;
 }
 
+/* Input components */
 .search-bar {
   display: flex;
   padding: 10px 15px;
@@ -219,6 +226,7 @@ textarea.search-input {
   /* padding-top: 10px; */
 }
 
+/* Chat interface */
 .chat-screen {
   display: none;
   opacity: 0;
@@ -259,6 +267,7 @@ textarea.search-input {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
+/* Message styles */
 .user-message,
 .bot-message,
 .system-message {
@@ -310,6 +319,7 @@ textarea.search-input {
   transition: padding 0.1s ease-out;
 }
 
+/* Mobile menu components */
 .hamburger-menu {
   display: none; /* This stays as none by default */
   position: fixed; /* Add fixed position by default */
@@ -382,6 +392,7 @@ textarea.search-input {
   opacity: 1;
 }
 
+/* Loading animation */
 .loading-message {
   display: flex;
   justify-content: center;
@@ -402,7 +413,9 @@ textarea.search-input {
   100% { transform: rotate(360deg); }
 }
 
+/* Media queries */
 @media (max-width: 768px) {
+  /* Mobile styles */
   nav {
     position: fixed;
     left: 0;
@@ -457,6 +470,7 @@ textarea.search-input {
 }
 
 @media (min-width: 769px) {
+  /* Desktop styles */
   nav {
     display: flex !important;
   }
