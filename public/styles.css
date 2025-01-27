@@ -434,7 +434,7 @@ textarea.search-input {
   .chat-input, .search-bar {
     width: 90%;
     max-width: none;
-    margin: 15px 20px;
+    margin-bottom: 15%;
     min-height: 42px; /* Change height to min-height */
   }
 

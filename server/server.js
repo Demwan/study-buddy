@@ -35,7 +35,7 @@ async function getGroqChatCompletion(messages) {
     return response.choices[0]?.message?.content || "Geen antwoord ontvangen.";
   } catch (error) {
     console.error("Fout bij het ophalen van antwoord:", error);
-    return "Er ging iets mis bij het ophalen van het antwoord.";
+    return "Er ging iets mis bij het ophalen van het antwoord." + error;
   }
 }
 
